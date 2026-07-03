@@ -9,7 +9,7 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential ca-certificates default-mysql-client default-libmysqlclient-dev git && \
+    apt-get install --no-install-recommends -y build-essential ca-certificates default-mysql-client default-libmysqlclient-dev git libxml2-dev libxslt-dev pkg-config libyaml-dev libssl-dev libffi-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
@@ -18,6 +18,7 @@ COPY Gemfile Gemfile.lock ./
 # Configure bundler and install gems with retry logic
 RUN bundle config set --local deployment 'false' && \
     bundle config set --local path 'vendor/bundle' && \
+    bundle lock --add-platform x86_64-linux && \
     bundle install --jobs 4 --retry 3
 
 # Copy application code
