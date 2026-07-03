@@ -2,17 +2,18 @@
  * Form component for adding/editing expenses
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ExpenseFormData } from "../types";
-import { EXPENSE_CATEGORIES } from "../constants/categories";
 import { TextField, SelectBox, Button } from "../vibes";
 import { useExpenseForm } from "../hooks/useExpenseForm";
+import { fetchCategories } from "../services/api";
 
 interface ExpenseFormProps {
   initialData?: Partial<ExpenseFormData>;
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
+  categories: { id: number; name: string }[];
 }
 
 export function ExpenseForm({
@@ -20,7 +21,13 @@ export function ExpenseForm({
   onSubmit,
   onCancel,
   submitLabel = "Add Expense",
+  categories,
 }: ExpenseFormProps) {
+  const options = categories.map((category) => ({
+    value: category.id + "",
+    label: category.name,
+  }));
+
   const { formData, errors, isSubmitting, handleChange, handleSubmit } =
     useExpenseForm({
       initialData,
@@ -38,11 +45,6 @@ export function ExpenseForm({
     gap: "0.5rem",
     marginTop: "0.5rem",
   };
-
-  const categoryOptions = EXPENSE_CATEGORIES.map((category) => ({
-    value: category,
-    label: category,
-  }));
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
@@ -71,7 +73,7 @@ export function ExpenseForm({
 
       <SelectBox
         label="Category"
-        options={categoryOptions}
+        options={options}
         value={formData.category}
         onChange={(e) => handleChange("category", e.target.value)}
         error={errors.category}

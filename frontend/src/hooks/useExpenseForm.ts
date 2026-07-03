@@ -23,6 +23,7 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (field: keyof ExpenseFormData, value: string) => {
+    console.log(`field: ${field}::value:${value}`);
     setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error for this field when user starts typing
     if (errors[field]) {
@@ -49,6 +50,7 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
       newErrors.date = "Date is required";
     }
 
+    console.log(formData);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
