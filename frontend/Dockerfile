@@ -6,6 +6,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
+<<<<<<< Updated upstream
+=======
+RUN npm install @rollup/rollup-linux-x64-musl
+
+>>>>>>> Stashed changes
 RUN npm install
 
 # Copy the rest of the application
