@@ -53,6 +53,7 @@ const HistoryPage: React.FC = () => {
     try {
       setLoading(true);
       const data = await getExpenses(selectedYear, selectedMonth);
+      console.log(data);
       setExpenses(data);
     } catch (error) {
       console.error("Error fetching expenses:", error);
