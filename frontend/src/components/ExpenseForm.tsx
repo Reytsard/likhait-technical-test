@@ -21,6 +21,9 @@ export function ExpenseForm({
   onCancel,
   submitLabel = "Add Expense",
 }: ExpenseFormProps) {
+  const dateToday = new Date();
+  const dateTodayFormatted = `${dateToday.getFullYear()}-${String(dateToday.getMonth() + 1).padStart(2, "0")}-${String(dateToday.getDate()).padStart(2, "0")}`;
+
   const { formData, errors, isSubmitting, handleChange, handleSubmit } =
     useExpenseForm({
       initialData,
@@ -43,6 +46,10 @@ export function ExpenseForm({
     value: category,
     label: category,
   }));
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange("date", e.target.value);
+  };
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
@@ -83,10 +90,11 @@ export function ExpenseForm({
         label="Date"
         type="date"
         value={formData.date}
-        onChange={(e) => handleChange("date", e.target.value)}
+        onChange={(e) => handleDateChange(e)}
         error={errors.date}
         fullWidth
         required
+        max={dateTodayFormatted}
       />
 
       <div style={buttonGroupStyle}>
