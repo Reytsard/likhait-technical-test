@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install @rollup/rollup-linux-x64-gnu
+RUN npm install @rollup/rollup-linux-x64-musl
 
 RUN npm install
 
